@@ -1,0 +1,19 @@
+#
+# The set of graphic characters of the United Kingdom 7-bit data code
+#
+# Reg-Number: 004
+# Reg-Date: 1975/12/01
+#
+# Origin: BS 4730
+#
+# Parent: ref-ascii
+#
+
+23	a3	# pound sign
+7e	203e	# overline
+
+#combine
+#	22	0308	# diaresis
+#	27	0301	# acute accent
+#	2c	0327	# cedilla
+#	5e	0302	# circumflex accent

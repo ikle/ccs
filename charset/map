@@ -1,0 +1,18 @@
+# control character set
+
+c-40		iso-ir-001
+c-41		iso-ir-007
+
+# 94-set
+
+d4-30		ref-dec-special
+
+d4-40		iso-ir-002
+d4-41		iso-ir-004
+d4-42		iso-ir-006
+
+# multibyte 94-set
+
+dm4-40		iso-ir-042
+dm4-42		iso-ir-087
+dm4-42-40	iso-ir-168

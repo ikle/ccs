@@ -1,0 +1,22 @@
+#
+# NATS control set for newspaper text transmission
+#
+# Reg-Number: 007
+# Reg-Date: 1975/12/01
+#
+# Origin: NATS
+#
+# Parent: ref-c0
+#
+
+09	f000	# FO  — formatting
+0b	f001	# ECD — end of instruction
+0c	f002	# SCD — start of instruction
+0d	f003	# QL  — quad left
+0e	f004	# UR  — upper rail
+0f	f005	# LR  — lower rail
+18	f006	# KW  — kill word
+1c	f007	# SS  — super shift
+1d	f008	# QC  — quad centre
+1e	f009	# QR  — quad right
+1f	f00a	# JY  — justify
