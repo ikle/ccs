@@ -1,0 +1,79 @@
+#
+# American National Standard Extended Latin Alphabet Coded Character
+# Set for Bibliographic Use
+#
+# Origin: ANS/NISO Z39.47
+#
+# Size: 94
+# Order: 1
+#
+
+21	0141
+22	00d8
+23	0110
+24	00de
+25	00c6
+26	0152
+27	02b9
+28	00b7
+29	266d
+2a	00ae
+2b	00b1
+2c	01a0
+2d	01af
+2e	02bc
+
+30	02bb
+31	0142
+32	00f8
+33	0111
+34	00fe
+35	00e6
+36	0153
+37	02bA
+38	0131
+39	00a3
+3a	00f0
+
+3c	01a1
+3d	01b0
+
+40	00b0
+41	2113
+42	2117
+43	00a9
+44	266f
+45	00bf
+46	00a1
+
+60	0309
+61	0300
+62	0301
+63	0302
+64	0303
+65	0304
+66	0306
+67	0307
+68	0308
+69	030c
+6a	030a
+6b	fe20	# combined with next form 0361
+6c	fe21	#
+6d	0315
+6e	030b
+6f	0310
+
+70	0327
+71	0328
+72	0323
+73	0324
+74	0325
+75	0333
+76	0332
+77	0326
+78	031c
+79	032e
+7a	fe22	# combined with next form 0360
+7b	fe23	#
+
+7e	0313
