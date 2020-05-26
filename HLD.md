@@ -137,3 +137,85 @@ either NUL or SYN characters is given as an input code.
 
 *  ENOMEM — Out of memory. See *malloc*(3) for a more detailed description.
 
+## Annex B: Character Set Mapping File Format
+
+*TBD*
+
+## Annex C: Private Code Construction
+
+Unicode codes occupy a space of 21 bits, and type for ccs\_code\_t has
+a size of at least 32 bits. The space unused by Unicode codes will be used
+as follows:
+
+1. C0yy'yyxx — the leading hexadecimal digit of the number is C for control
+   characters.
+2. Enii'iixx — the leading digit is E for escape sequences.
+3. Fnii'iixx — the leading digit is F for CSI control sequences (control
+   functions in terms of ECMA-48).
+
+The two least significant hexadecimal digits (xx) represent the original
+serial number of the control code for control characters. The next four
+(yyyy) are binary-coded decimal representing the registration number for
+this control code group.
+
+Example for NATS (ISO-IR-007):
+```c
+#define CCS_FO		0xc0000709
+#define CCS_ECD		0xc000070b
+#define CCS_SCD		0xc000070c
+...
+#define CCS_JY		0xc000071f
+```
+
+Codes for escape sequences of type Fe are mapped directly to equivalent C1
+codes. Codes for type Fs and type nF other than 3F (first intermediate byte
+is 02/03) are allocated as control codes with registration number 0.
+
+Example for Fs (lower byte equals to final):
+```c
+#define CCS_DMI		0xc0000060	/* ESC 06/00 */
+...
+#define CCS_RIS		0xc0000063	/* ESC 06/03 */
+```
+
+Example for nF other than 3F (lower byte equals to type byte):
+```c
+#define CCS_ACS		0xc0000020	/* ESC 02/00 ... */
+#define CCS_CZD		0xc0000021	/* ESC 02/01 ... */
+#define CCS_C1D		0xc0000022	/* ESC 02/02 ... */
+...
+#define CCS_DOCS	0xc0000025	/* ESC 02/05 ... */
+```
+
+Note that all additional intermediate bytes and the final byte for type nF
+other than 3F (3Fp and Ft) are parameter bytes.
+
+The two least significant hexadecimal digits (xx) for escape and control
+functions represent the final byte for such sequences. The next four
+(iiii) are intermediate byte lower digits, excluding the first intermediate
+byte (02/03) for escape sequences. And penultimate one (n) is a number of
+intermediate bytes coded.
+
+Example for 3Fp without extra intermediate bytes:
+```c
+#define CCS_XXX		0xe0000030	/* ESC 02/03 03/00 */
+```
+
+Example for Ft with one extra intermediate byte:
+```c
+#define CCS_YYY		0xe1000642	/* ESC 02/03 02/06 04/02 */
+```
+
+Example for Ft with two extra intermediate bytes:
+```c
+#define CCS_ZZZ		0xe200736d	/* ESC 02/03 02/07 02/03 06/13 */
+```
+
+Examples for CSI code encoding:
+```c
+#define CCS_CUD		0xf0000043	/* CSI ... 04/03 */
+...
+#define CCS_SGR		0xf000006d	/* CSI ... 06/13 */
+...
+#define CCS_GCC		0xf100005f	/* CSI ... 02/00 05/15 */
+```
