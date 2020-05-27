@@ -139,7 +139,43 @@ either NUL or SYN characters is given as an input code.
 
 ## Annex B: Character Set Mapping File Format
 
-*TBD*
+We use EBNF-like grammar with the following extensions:
+
+*  α is any character;
+*  ε is an empty string;
+*  the character in single quotes is a character literal;
+*  expression X .. Y defines any character in range from X to Y inclusive;
+*  the full stop is the grammar terminator.
+
+The grammar for character set mapping file format follows:
+
+``` ebnf
+digit		= '0' .. '9';
+alpha		= 'a' .. 'z';
+hex digit	= digit | 'a' .. 'f';
+
+number		= (digit - '0'), {digit};		(* non-zero *)
+name		= alpha, {['-'], (alpha | digit)};
+space		= {SP | TAB} - ε;
+
+size		= "# Size:",   space, number, LF;
+order		= "# Order:",  space, number, LF;
+parent		= "# Parent:", space, name,   LF;
+
+define		= size | order | parent;
+comment		= ('#', {α - LF}, LF) - define;
+
+code		= {hex digit, hex digit} - ε;	(* should be: order times *)
+code-point	= {hex digit} - ε;		(* should be: from 1 to 6 *)
+
+map		= code, space, code-point, [space], comment | LF;
+
+charset		= {define | comment | LF | map} - ε.
+```
+
+Any line must be no more than 77 characters. The size and order (degree) of
+the character are taken from the first encountered fields Size and Order
+(specified directly or in the parent file), all others are ignored.
 
 ## Annex C: Private Code Construction
 
