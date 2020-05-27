@@ -102,6 +102,20 @@
 #define CCS_PM		0x9e	/* privacy message, 5.6			*/
 #define CCS_APC		0x9f	/* application program command, 5.6	*/
 
+/* NATS control set */
+
+#define CCS_FO		0xc0000709	/* formatting			*/
+#define CCS_ECD		0xc000070b	/* end of instruction		*/
+#define CCS_SCD		0xc000070c	/* start of instruction		*/
+#define CCS_QL		0xc000070d	/* quad left			*/
+#define CCS_UR		0xc000070e	/* upper rail			*/
+#define CCS_LR		0xc000070f	/* lower rail			*/
+#define CCS_KW		0xc0000718	/* kill word			*/
+#define CCS_SS		0xc000071c	/* super shift			*/
+#define CCS_QC		0xc000071d	/* quad centre			*/
+#define CCS_QR		0xc000071e	/* quad right			*/
+#define CCS_JY		0xc000071f	/* justify			*/
+
 /* ECMA-35 13.2 Types of escape sequences */
 
 #define CCS_ACS		0xc0000020
