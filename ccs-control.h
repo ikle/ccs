@@ -132,4 +132,56 @@
 #define CCS_LS2R	0xc000007d	/* ECMA-35 7.3 */
 #define CCS_LS1R	0xc000007e	/* ECMA-35 7.3 */
 
+/* ECMA-48 5.4 Control sequences, Table 3, CSI F without I */
+
+#define CCS_ICH		0xf0000040
+#define CCS_CUU		0xf0000041
+#define CCS_CUD		0xf0000042
+#define CCS_CUF		0xf0000043
+#define CCS_CUB		0xf0000044
+#define CCS_CNL		0xf0000045
+#define CCS_CPL		0xf0000046
+#define CCS_CHA		0xf0000047
+#define CCS_CUP		0xf0000048
+#define CCS_CHT		0xf0000049
+#define CCS_ED		0xf000004a
+#define CCS_EL		0xf000004b
+#define CCS_IL		0xf000004c
+#define CCS_DL		0xf000004d
+#define CCS_EF		0xf000004e
+#define CCS_EA		0xf000004f
+
+#define CCS_DCH		0xf0000050
+#define CCS_SSE		0xf0000051
+#define CCS_CPR		0xf0000052
+#define CCS_SU		0xf0000053
+#define CCS_SD		0xf0000054
+#define CCS_NP		0xf0000055
+#define CCS_PP		0xf0000056
+#define CCS_CTC		0xf0000057
+#define CCS_ECH		0xf0000058
+#define CCS_CVT		0xf0000059
+#define CCS_CBT		0xf000005a
+#define CCS_SRS		0xf000005b
+#define CCS_PTX		0xf000005c
+#define CCS_SDS		0xf000005d
+#define CCS_SIMD	0xf000005e
+
+#define CCS_HPA		0xf0000060
+#define CCS_HPR		0xf0000061
+#define CCS_REP		0xf0000062
+#define CCS_DA		0xf0000063
+#define CCS_VPA		0xf0000064
+#define CCS_VPR		0xf0000065
+#define CCS_HVP		0xf0000066
+#define CCS_TBC		0xf0000067
+#define CCS_SM		0xf0000068
+#define CCS_MC		0xf0000069
+#define CCS_HPB		0xf000006a
+#define CCS_VPB		0xf000006b
+#define CCS_RM		0xf000006c
+#define CCS_SGR		0xf000006d
+#define CCS_DSR		0xf000006e
+#define CCS_DAQ		0xf000006f
+
 #endif  /* CCS_CONTROL_H */
