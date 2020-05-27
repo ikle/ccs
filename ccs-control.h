@@ -184,4 +184,53 @@
 #define CCS_DSR		0xf000006e
 #define CCS_DAQ		0xf000006f
 
+/* ECMA-48 5.4 Control sequences, Table 4, CSI F with I = 02/00 */
+
+#define CCS_SL		0xf1000040
+#define CCS_SR		0xf1000041
+#define CCS_GSM		0xf1000042
+#define CCS_GSS		0xf1000043
+#define CCS_FNT		0xf1000044
+#define CCS_TSS		0xf1000045
+#define CCS_JFY		0xf1000046
+#define CCS_SPI		0xf1000047
+#define CCS_QUAD	0xf1000048
+#define CCS_SSU		0xf1000049
+#define CCS_PFS		0xf100004a
+#define CCS_SHS		0xf100004b
+#define CCS_SVS		0xf100004c
+#define CCS_IGS		0xf100004d
+#define CCS_HTSA	0xf100004e
+#define CCS_IDCS	0xf100004f
+
+#define CCS_PPA		0xf1000050
+#define CCS_PPR		0xf1000051
+#define CCS_PPB		0xf1000052
+#define CCS_SPD		0xf1000053
+#define CCS_DTA		0xf1000054
+#define CCS_SLH		0xf1000055
+#define CCS_SLL		0xf1000056
+#define CCS_FNK		0xf1000057
+#define CCS_SPQR	0xf1000058
+#define CCS_SEF		0xf1000059
+#define CCS_PEC		0xf100005a
+#define CCS_SSW		0xf100005b
+#define CCS_SACS	0xf100005c
+#define CCS_SAPV	0xf100005d
+#define CCS_STAB	0xf100005e
+#define CCS_GCC		0xf100005f
+
+#define CCS_TATE	0xf1000060
+#define CCS_TALE	0xf1000061
+#define CCS_TAC		0xf1000062
+#define CCS_TCC		0xf1000063
+#define CCS_TSR		0xf1000064
+#define CCS_SCO		0xf1000065
+#define CCS_SRCS	0xf1000066
+#define CCS_SCS		0xf1000067
+#define CCS_SLS		0xf1000068
+#define CCS_SPH		0xf1000069
+#define CCS_SPL		0xf100006a
+#define CCS_SCP		0xf100006b
+
 #endif  /* CCS_CONTROL_H */
