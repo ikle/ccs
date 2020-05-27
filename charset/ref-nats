@@ -9,14 +9,14 @@
 # Parent: ref-c0
 #
 
-09	f000	# FO  — formatting
-0b	f001	# ECD — end of instruction
-0c	f002	# SCD — start of instruction
-0d	f003	# QL  — quad left
-0e	f004	# UR  — upper rail
-0f	f005	# LR  — lower rail
-18	f006	# KW  — kill word
-1c	f007	# SS  — super shift
-1d	f008	# QC  — quad centre
-1e	f009	# QR  — quad right
-1f	f00a	# JY  — justify
+09	c0000709	# FO  — formatting
+0b	c000070b	# ECD — end of instruction
+0c	c000070c	# SCD — start of instruction
+0d	c000070d	# QL  — quad left
+0e	c000070e	# UR  — upper rail
+0f	c000070f	# LR  — lower rail
+18	c0000718	# KW  — kill word
+1c	c000071c	# SS  — super shift
+1d	c000071d	# QC  — quad centre
+1e	c000071e	# QR  — quad right
+1f	c000071f	# JY  — justify
