@@ -102,7 +102,7 @@
 #define CCS_PM		0x9e	/* privacy message, 5.6			*/
 #define CCS_APC		0x9f	/* application program command, 5.6	*/
 
-/* NATS control set */
+/* ISO-IR 007 NATS control set */
 
 #define CCS_FO		0xc0000709	/* formatting			*/
 #define CCS_ECD		0xc000070b	/* end of instruction		*/
