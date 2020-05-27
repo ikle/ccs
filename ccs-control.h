@@ -102,4 +102,20 @@
 #define CCS_PM		0x9e	/* privacy message, 5.6			*/
 #define CCS_APC		0x9f	/* application program command, 5.6	*/
 
+/* ECMA-35 13.2 Types of escape sequences */
+
+#define CCS_ACS		0xc0000020
+#define CCS_CZD		0xc0000021
+#define CCS_C1D		0xc0000022
+#define CCS_GDM		0xc0000024
+#define CCS_DOCS	0xc0000025
+#define CCS_IRR		0xc0000026
+#define CCS_GZD4	0xc0000028
+#define CCS_G1D4	0xc0000029
+#define CCS_G2D4	0xc000002a
+#define CCS_G3D4	0xc000002b
+#define CCS_G1D6	0xc000002d
+#define CCS_G2D6	0xc000002e
+#define CCS_G3D6	0xc000002f
+
 #endif  /* CCS_CONTROL_H */
