@@ -118,4 +118,18 @@
 #define CCS_G2D6	0xc000002e
 #define CCS_G3D6	0xc000002f
 
+/* ECMA-48 5.5 Independent control functions, ESC Fs */
+
+#define CCS_DMI		0xc0000060
+#define CCS_INT		0xc0000061
+#define CCS_EMI		0xc0000062
+#define CCS_RIS		0xc0000063
+#define CCS_CMD		0xc0000064	/* ECMA-35 15.3 */
+#define CCS_LS2		0xc000006e	/* ECMA-35 7.3 */
+#define CCS_LS3		0xc000006f	/* ECMA-35 7.3 */
+
+#define CCS_LS3R	0xc000007c	/* ECMA-35 7.3 */
+#define CCS_LS2R	0xc000007d	/* ECMA-35 7.3 */
+#define CCS_LS1R	0xc000007e	/* ECMA-35 7.3 */
+
 #endif  /* CCS_CONTROL_H */
