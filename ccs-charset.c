@@ -37,12 +37,21 @@ static const char *get_field (struct ccs_charset *o, FILE *f)
 	line[i] = '\0';
 
 	if (sscanf (line, " Size: %u", &n) == 1) {
+		if (o->size != 0)
+			return "size already defined";
+
 		o->size = n;
 	}
 	else if (sscanf (line, " Order: %u", &n) == 1) {
+		if (o->order != 0)
+			return "order already defined";
+
 		o->order = n;
 	}
 	else if (sscanf (line, " Shift: %u", &n) == 1) {
+		if (o->shift != 0)
+			return "shift already defined";
+
 		o->shift = n;
 	}
 
