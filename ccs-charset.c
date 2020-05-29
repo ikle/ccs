@@ -62,6 +62,15 @@ static const char *get_field (struct ccs_charset *o, FILE *f)
 	return NULL;
 }
 
+static size_t zpow (size_t x, unsigned n)  /* n MUST be non-zero */
+{
+	size_t y;
+
+	for (y = x; n > 1; y *= x, --n) {}
+
+	return y;
+}
+
 static const char *get_header (struct ccs_charset *o, FILE *f)
 {
 	int a;
@@ -81,7 +90,7 @@ static const char *get_header (struct ccs_charset *o, FILE *f)
 	    o->order == 0 || o->order > 2)
 		return "no valid character parameters defined";
 
-	o->data = calloc (o->size * o->order, sizeof (o->data[0]));
+	o->data = calloc (zpow (o->size, o->order), sizeof (o->data[0]));
 	if (o->data == NULL)
 		return "cannot allocate memory";
 
