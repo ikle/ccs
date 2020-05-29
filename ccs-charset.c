@@ -15,7 +15,7 @@
 
 struct ccs_charset {
 	unsigned short size;
-	unsigned char order, shift;
+	unsigned char order, shift, depth;
 	ccs_code_t *data;
 };
 
@@ -275,10 +275,15 @@ const char *ccs_charset_merge (struct ccs_charset *o, const char *name)
 	FILE *f;
 	const char *e;
 
+	if (o->depth == 0)
+		return "inheritance depth exceeded";
+
 	if ((f = open_by_name ("charset", name)) == NULL)
 		return strerror (errno);
 
+	--o->depth;
 	e = parse (o, f);
+	++o->depth;
 	fclose (f);
 	return e;
 }
@@ -293,6 +298,7 @@ struct ccs_charset *ccs_charset_alloc (FILE *f)
 	o->size  = 0;
 	o->order = 0;
 	o->shift = 0;
+	o->depth = 10;
 	o->data  = NULL;
 
 	if (parse (o, f) != NULL)
