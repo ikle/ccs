@@ -17,7 +17,7 @@ struct ccs_charset {
 	ccs_code_t *data;
 };
 
-static int get_field (struct ccs_charset *o, FILE *f)
+static const char *get_field (struct ccs_charset *o, FILE *f)
 {
 	int a;
 	size_t i;
@@ -26,10 +26,10 @@ static int get_field (struct ccs_charset *o, FILE *f)
 
 	for (i = 0; (a = getc (f)) != '\n'; ++i) {
 		if (a == EOF)
-			return 0;
+			return "unexpected end of file";
 
-		if (i >= sizeof (line))  /* line too long */
-			return 0;
+		if (i >= sizeof (line))
+			return "header line too long";
 
 		line[i] = a;
 	}
@@ -46,142 +46,159 @@ static int get_field (struct ccs_charset *o, FILE *f)
 		o->shift = n;
 	}
 
-	return 1;
+	return NULL;
 }
 
-static int get_header (struct ccs_charset *o, FILE *f)
+static const char *get_header (struct ccs_charset *o, FILE *f)
 {
 	int a;
+	const char *e;
 
 	while ((a = getc (f)) == '#')
-		if (!get_field (o, f))
-			return 0;
+		if ((e = get_field (o, f)) != NULL)
+			return e;
 
 	if (a != EOF)
 		ungetc (a, f);
 
 	if (o->size == 0 || o->order == 0)
-		return 0;
+		return "no valid size and order defined";
 
 	o->data = calloc (o->size * o->order, sizeof (o->data[0]));
 	if (o->data == NULL)
-		return 0;
+		return "cannot allocate memory";
 
-	return 1;
+	return NULL;
 }
 
-static int drop_line (FILE *f)
+static const char *drop_line (FILE *f)
 {
 	int a;
 
 	while ((a = getc (f)) != '\n')
 		if (a == EOF)
-			return 0;
+			return "unexpected end of file";
 
-	return 1;
+	return NULL;
 }
 
-static int get_hdigit (FILE *f, int *digit)
+static const char *get_hdigit (FILE *f, int *digit)
 {
 	int a = getc (f);
 
 	if (a >= '0' && a <= '9') {
 		*digit = a - '0';
-		return 1;
+		return NULL;
 	}
 
 	if (a >= 'a' && a <= 'f') {
 		*digit = a - 'a' + 10;
-		return 1;
+		return NULL;
 	}
 
-	return 0;
+	if (a != EOF)
+		ungetc (a, f);
+
+	return "hexadecimal digit expected";
 }
 
-static int get_octet (FILE *f, int *octet)
+static const char *get_octet (FILE *f, int *octet)
 {
+	const char *e;
 	int h, l;
 
-	if (get_hdigit (f, &h) && get_hdigit (f, &l)) {
-		*octet = (h << 4) | l;
-		return 1;
+	if ((e = get_hdigit (f, &h)) != NULL ||
+	    (e = get_hdigit (f, &l)) != NULL)
+		return e;
+
+	*octet = (h << 4) | l;
+	return NULL;
+}
+
+static const char *
+get_code (const struct ccs_charset *o, FILE *f, size_t *offset)
+{
+	size_t i, idx;
+	int octet;
+	const char *e;
+
+	for (i = 0, idx = 0; i < o->order; ++i, idx = idx * o->size + octet) {
+		if ((e = get_octet (f, &octet)) != NULL)
+			return e;
+
+		if ((octet -= o->shift) < 0 || octet >= o->size)
+			return "octet value out of range";
 	}
 
-	return 0;
+	*offset = idx;
+	return NULL;
 }
 
-static int get_code (const struct ccs_charset *o, FILE *f, size_t *offset)
-{
-	size_t i, offs;
-	int octet;
-
-	for (i = 0, offs = 0; i < o->order; ++i, offs = offs * o->size + octet)
-		if (!get_octet (f, &octet) ||
-		    (octet -= o->shift) < 0 || octet >= o->size)
-			return 0;
-
-	*offset = offs;
-	return 1;
-}
-
-static int get_unicode (FILE *f, ccs_code_t *code)
+static const char *get_unicode (FILE *f, ccs_code_t *code)
 {
 	size_t i;
 	ccs_code_t c;
 	int digit;
+	const char *e;
 
 	for (i = 0, c = 0; i < 8; ++i, c = (c << 4) | digit)
-		if (!get_hdigit (f, &digit)) {
+		if ((e = get_hdigit (f, &digit)) != NULL) {
 			if (i > 0)
 				break;
 
-			return 0;
+			return e;
 		}
 
 	*code = c;
-	return 1;
+	return NULL;
 }
 
-static int get_space (FILE *f)
+static const char *get_space (FILE *f)
 {
 	int a;
 
 	if ((a = getc (f)) != ' ' && a != '\t')
-		return 0;
+		return "space or tab character expected";
 
-	while ((a = getc (f)) != EOF)
-		if (a != ' ' && a != '\t') {
-			ungetc (a, f);
-			break;
-		}
+	while ((a = getc (f)) == ' ' || a == '\t') {}
 
-	return 1;
+	if (a != EOF)
+		ungetc (a, f);
+
+	return NULL;
 }
 
-static int get_eol (FILE *f)
+static const char *get_eol (FILE *f)
 {
 	int a;
 
 	while ((a = getc (f)) == ' ' || a == '\t') {}
 
-	return a == '#' ? drop_line (f) : a == '\n';
+	if (a == '#')
+		return drop_line (f);
+
+	return a == '\n' ? NULL : "end of line expected";
 }
 
-static int get_map (const struct ccs_charset *o, FILE *f)
+static const char *get_map (const struct ccs_charset *o, FILE *f)
 {
+	const char *e;
 	size_t offset;
 	ccs_code_t code;
-	int ret = get_code (o, f, &offset) && get_space (f) &&
-		  get_unicode (f, &code) && get_eol (f);
 
-	if (ret)
-		o->data[offset] = code;
+	if ((e = get_code (o, f, &offset)) != NULL ||
+	    (e = get_space (f))            != NULL ||
+	    (e = get_unicode (f, &code))   != NULL ||
+	    (e = get_eol (f))              != NULL)
+		return e;
 
-	return ret;
+	o->data[offset] = code;
+	return NULL;
 }
 
-static int parse (struct ccs_charset *o, FILE *f)
+static const char *parse (struct ccs_charset *o, FILE *f)
 {
+	const char *e;
 	int a;
 
 	o->size  = 0;
@@ -189,31 +206,31 @@ static int parse (struct ccs_charset *o, FILE *f)
 	o->shift = 0;
 	o->data  = NULL;
 
-	if (!get_header (o, f))
-		return 0;
+	if ((e = get_header (o, f)) != NULL)
+		return e;
 
 	while ((a = getc (f)) != EOF)
 		switch (a) {
 		case '\n':
 			break;
 		case '#':
-			if (!drop_line (f))
+			if ((e = drop_line (f)) != NULL)
 				goto no_map;
 
 			break;
 		default:
 			ungetc (a, f);
 
-			if (!get_map (o, f))
+			if ((e = get_map (o, f)) != NULL)
 				goto no_map;
 
 			break;
 		}
 
-	return 1;
+	return NULL;
 no_map:
 	free (o->data);
-	return 0;
+	return e;
 }
 
 struct ccs_charset *ccs_charset_alloc (FILE *f)
@@ -223,7 +240,7 @@ struct ccs_charset *ccs_charset_alloc (FILE *f)
 	if ((o = malloc (sizeof (*o))) == NULL)
 		return NULL;
 
-	if (!parse (o, f))
+	if (parse (o, f) != NULL)
 		goto no_parse;
 
 	return o;
