@@ -17,6 +17,8 @@
 struct ccs_charset *ccs_charset_alloc (FILE *f);
 void ccs_charset_free (struct ccs_charset *o);
 
+const char *ccs_charset_merge (struct ccs_charset *o, const char *name);
+
 struct ccs_charset *ccs_charset_locate (const struct ccs_de *de);
 
 #endif  /* CCS_CHARSET_H */

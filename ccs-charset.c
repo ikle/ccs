@@ -7,7 +7,9 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
+#include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <ccs-charset.h>
 
@@ -54,6 +56,8 @@ static const char *get_field (struct ccs_charset *o, FILE *f)
 
 		o->shift = n;
 	}
+	else if (strncmp (line, " Parent: ", 9) == 0)
+		return ccs_charset_merge (o, line + 9);
 
 	return NULL;
 }
@@ -237,6 +241,35 @@ static const char *parse (struct ccs_charset *o, FILE *f)
 	return NULL;
 no_map:
 	free (o->data);
+	return e;
+}
+
+static FILE *open_by_name (const char *root, const char *name)
+{
+	int len = snprintf (NULL, 0, "%s/%s", root, name);
+	char *path;
+	FILE *f;
+
+	if ((path = malloc (len + 1)) == NULL)
+		return NULL;
+
+	snprintf (path, len + 1, "%s/%s", root, name);
+	f = fopen (path, "r");
+	free (path);
+
+	return f;
+}
+
+const char *ccs_charset_merge (struct ccs_charset *o, const char *name)
+{
+	FILE *f;
+	const char *e;
+
+	if ((f = open_by_name ("charset", name)) == NULL)
+		return strerror (errno);
+
+	e = parse (o, f);
+	fclose (f);
 	return e;
 }
 
