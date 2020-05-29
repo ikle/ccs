@@ -70,6 +70,9 @@ static const char *get_header (struct ccs_charset *o, FILE *f)
 	if (a != EOF)
 		ungetc (a, f);
 
+	if (o->data != NULL)
+		return NULL;
+
 	if (o->size == 0 || o->order == 0)
 		return "no valid size and order defined";
 
@@ -210,11 +213,6 @@ static const char *parse (struct ccs_charset *o, FILE *f)
 	const char *e;
 	int a;
 
-	o->size  = 0;
-	o->order = 0;
-	o->shift = 0;
-	o->data  = NULL;
-
 	if ((e = get_header (o, f)) != NULL)
 		return e;
 
@@ -248,6 +246,11 @@ struct ccs_charset *ccs_charset_alloc (FILE *f)
 
 	if ((o = malloc (sizeof (*o))) == NULL)
 		return NULL;
+
+	o->size  = 0;
+	o->order = 0;
+	o->shift = 0;
+	o->data  = NULL;
 
 	if (parse (o, f) != NULL)
 		goto no_parse;
