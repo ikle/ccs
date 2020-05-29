@@ -77,8 +77,9 @@ static const char *get_header (struct ccs_charset *o, FILE *f)
 	if (o->data != NULL)
 		return NULL;
 
-	if (o->size == 0 || o->order == 0)
-		return "no valid size and order defined";
+	if (o->size  == 0 || o->size  > 256 || (o->shift + o->size) > 256 ||
+	    o->order == 0 || o->order > 2)
+		return "no valid character parameters defined";
 
 	o->data = calloc (o->size * o->order, sizeof (o->data[0]));
 	if (o->data == NULL)
