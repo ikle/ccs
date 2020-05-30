@@ -315,6 +315,7 @@ void ccs_charset_free (struct ccs_charset *o)
 	if (o == NULL)
 		return;
 
+	free (o->data);
 	free (o);
 }
 
