@@ -14,7 +14,7 @@
 
 #include <ccs-types.h>
 
-struct ccs_charset *ccs_charset_alloc (FILE *f);
+struct ccs_charset *ccs_charset_alloc (const char *name);
 void ccs_charset_free (struct ccs_charset *o);
 
 const char *ccs_charset_merge (struct ccs_charset *o, const char *name);

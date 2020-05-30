@@ -288,7 +288,7 @@ const char *ccs_charset_merge (struct ccs_charset *o, const char *name)
 	return e;
 }
 
-struct ccs_charset *ccs_charset_alloc (FILE *f)
+struct ccs_charset *ccs_charset_alloc (const char *name)
 {
 	struct ccs_charset *o;
 
@@ -301,7 +301,7 @@ struct ccs_charset *ccs_charset_alloc (FILE *f)
 	o->depth = 10;
 	o->data  = NULL;
 
-	if (parse (o, f) != NULL)
+	if (name != NULL && ccs_charset_merge (o, name) != NULL)
 		goto no_parse;
 
 	return o;
