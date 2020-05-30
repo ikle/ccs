@@ -156,26 +156,29 @@ hex digit	= digit | 'a' .. 'f';
 
 number		= (digit - '0'), {digit};		(* non-zero *)
 name		= alpha, {['-'], (alpha | digit)};
+octet		= hex digit, hex digit;
 space		= {SP | TAB} - ε;
+comment		= '#', {α - LF}, LF;
 
 size		= "# Size:",   space, number, LF;
 order		= "# Order:",  space, number, LF;
+shift		= "# Shift: ", space, number, LF;
 parent		= "# Parent:", space, name,   LF;
 
-define		= size | order | parent;
-comment		= ('#', {α - LF}, LF) - define;
+define		= size | order | shift | parent;
+header		= {define | comment - define};
 
-code		= {hex digit, hex digit} - ε;	(* should be: order times *)
-code-point	= {hex digit} - ε;		(* should be: from 1 to 6 *)
+code		= {octet} - ε;			(* should be: order times *)
+unicode		= {hex digit} - ε;		(* should be: from 1 to 6 *)
+eol		= [space], comment | LF;
+map		= code, space, unicode, eol;
 
-map		= code, space, code-point, [space], comment | LF;
-
-charset		= {define | comment | LF | map} - ε.
+charset		= header, {LF | comment | map}.
 ```
 
-Any line must be no more than 77 characters. The size and order (degree) of
-the character are taken from the first encountered fields Size and Order
-(specified directly or in the parent file), all others are ignored.
+Any line must be no more than 77 characters. The size, order (degree) and
+shift of the character should be defined only once directly or indirectly
+via parent file.
 
 ## Annex C: Private Code Construction
 
